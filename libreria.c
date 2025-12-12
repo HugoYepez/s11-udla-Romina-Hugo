@@ -86,3 +86,111 @@ void LeerAutor(const char *msg, char *dst, int max)
     } while (TieneNumero || len >= max);
     strcpy(dst, temp);
 }
+void Alta_Libro()
+{
+    if (n == MAX)
+    {
+        puts(" -La Libreria Esta Llena...Prueba Borrando Un Libro- ");
+        return;
+    }
+    int id = LeerEnteroPositivo("ID: ");
+    if (idx(id) >= 0)
+    {
+        puts(" -ID Repetido...Prueba Ingresando Otro ID- ");
+        return;
+    }
+    v[n].id = id;
+    LeerTexto("TITULO: ", v[n].titulo, 100);
+    LeerAutor("AUTOR: ", v[n].autor, 50);
+    v[n].year = LeerEnteroPositivo("YEAR: ");
+    strcpy(v[n].estado, "Disponible");
+    n++;
+}
+
+void Lista_Libros()
+{
+    if (!n)
+    {
+        puts(" -La Lista Esta Vacia...Prueba Dando De Alta Un Libro- ");
+        return;
+    }
+    printf("\n%-5s %-30s %-20s %-6s %-12s\n", "ID", "TITULO", "AUTOR", "YEAR", "ESTADO");
+    for (int i = 0; i < n; i++)
+        printf("%-5d %-30s %-20s %-6d %-12s \n", v[i].id, v[i].titulo, v[i].autor, v[i].year, v[i].estado);
+}
+
+void Buscar_Libros()
+{
+    int op;
+    printf(" -Buscar Libro- \n");
+    printf("1) ID \n");
+    printf("2) NOMBRE \n");
+    printf("OPCION: ");
+    scanf("%d", &op);
+    getchar();
+    if (op == 1)
+    {
+        int id = LeerEnteroPositivo("ID: ");
+        int i = idx(id);
+        if (i < 0)
+        {
+            puts(" -El ID que ingresaste no coincide con ningun libro- ");
+            return;
+        }
+        printf("\n%-5s %-30s %-20s %-6s %-12s\n", "ID", "TITULO", "AUTOR", "YEAR", "ESTADO");
+        printf("%-5d %-30s %-20s %-6d %-12s \n", v[i].id, v[i].titulo, v[i].autor, v[i].year, v[i].estado);
+    }
+    else
+    {
+        char nombre[100];
+        LeerTexto("NOMBRE: ", nombre, 100);
+        int found = 0;
+        printf("\n%-5s %-30s %-20s %-6s %-12s\n", "ID", "TITULO", "AUTOR", "YEAR", "ESTADO");
+        for (int i = 0; i < n; i++)
+        {
+            if (strstr(v[i].titulo, nombre))
+            {
+                printf("%-5d %-30s %-20s %-6d %-12s\n", v[i].id, v[i].titulo, v[i].autor, v[i].year, v[i].estado);
+                found = 1;
+            }
+        }
+        if (!found)
+            puts(" -EL Nombre Que Ingresaste No Coincide Con Ningun Libro- ");
+    }
+}
+
+void Cambiar_Estado()
+{
+    int id = LeerEnteroPositivo("ID: ");
+    int i = idx(id);
+    if (i < 0)
+    {
+        puts(" -El ID que ingresaste no coincide con ningun libro- ");
+        return;
+    }
+    if (strcmp(v[i].estado, "Disponible") == 0)
+    {
+        strcpy(v[i].estado, "Prestado");
+        puts("Libro prestado exitosamente");
+    }
+    else
+    {
+        strcpy(v[i].estado, "Disponible");
+        puts("Libro devuelto...Ahora esta Disponible");
+    }
+}
+
+void Borrar_Libros()
+{
+    int id = LeerEnteroPositivo("ID: ");
+    int i = idx(id);
+    if (i < 0)
+    {
+        puts(" -El ID que ingresaste no coincide con ningun libro- ");
+        return;
+    }
+    for (int j = i; j < n - 1; j++)
+        v[j] = v[j + 1];
+    n--;
+    puts(" -Libro borrado exitosamente- ");
+}
