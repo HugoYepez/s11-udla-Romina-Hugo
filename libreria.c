@@ -194,3 +194,39 @@ void Borrar_Libros()
     n--;
     puts(" -Libro borrado exitosamente- ");
 }
+int main()
+{
+    int o;
+    do
+    {
+        puts("\n ==LIBRERIA UDLA == ");
+        puts("1)ALTA  2)LISTA  3)BUSCA  4)ESTADO  5)BORRAR  0)SALIR");
+        printf("OPCION: ");
+        scanf("%d", &o);
+        getchar();
+        switch (o)
+        {
+        case 1:
+            Alta_Libro();
+            break;
+        case 2:
+            Lista_Libros();
+            break;
+        case 3:
+            Buscar_Libros();
+            break;
+        case 4:
+            Cambiar_Estado();
+            break;
+        case 5:
+            Borrar_Libros();
+            break;
+        case 0:
+            puts("Gracias por usar...Vuelva pronto");
+            break;
+        default:
+            puts("Opcion invalida..,Intenta de nuevo");
+        }
+    } while (o != 0);
+    return 0;
+}
